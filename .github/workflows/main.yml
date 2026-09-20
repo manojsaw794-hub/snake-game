@@ -12,31 +12,39 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
     - name: Install System Dependencies
       run: |
         sudo apt update
-        sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev ccache liblld-14
+        sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libsqlite3-dev cmake libssl-dev libtinfo6 ffmpeg libffi-dev
+        pip install --upgrade pip
+        pip install "cython==0.29.33" buildozer "kivy==2.2.1"
 
-    - name: Install Python Tools
+    - name: Configure Buildozer
       run: |
-        pip install --upgrade pip setuptools
-        pip install buildozer cython==0.29.33 kivy
-
-    - name: Setup Buildozer Config and Build
-      run: |
-        buildozer init
-        sed -i 's/requirements = python3,kivy/requirements = python3,kivy/g' buildozer.spec
+        if [ ! -f buildozer.spec ]; then
+          buildozer init
+        fi
+        sed -i 's/#requirements = python3,kivy/requirements = python3,kivy==2.2.1/g' buildozer.spec
         sed -i 's/# android.accept_sdk_license = False/android.accept_sdk_license = True/g' buildozer.spec
-        sed -i 's/# android.ndk = 25b/android.ndk = 25b/g' buildozer.spec
-        sed -i 's/# android.api = 33/android.api = 33/g' buildozer.spec
+        sed -i 's/# android.api = 31/android.api = 33/g' buildozer.spec
+        sed -i 's/# android.minapi = 21/android.minapi = 21/g' buildozer.spec
+
+    - name: Build with Buildozer
+      run: |
         yes | buildozer -v android debug
 
-    - name: Upload APK
+    - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: snake-game-apk
