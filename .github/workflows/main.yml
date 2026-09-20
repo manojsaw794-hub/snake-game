@@ -23,6 +23,13 @@ jobs:
         sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libsqlite3-dev cmake libssl-dev libtinfo6
         pip install --upgrade "cython<3.0.0" buildozer "kivy==2.2.1"
 
+    - name: Initialize and Configure Buildozer
+      run: |
+        if [ ! -f buildozer.spec ]; then
+          buildozer init
+        fi
+        sed -i 's/#requirements = python3,kivy/requirements = python3,kivy==2.2.1/g' buildozer.spec
+
     - name: Build with Buildozer
       run: |
         yes | buildozer -v android debug
