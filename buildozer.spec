@@ -12,7 +12,7 @@ package.domain = org.test
 # (str) Source code where the main.py lives
 source.dir = .
 
-# (list) Source files to include (leave empty to include all files)
+# (list) Source files to include
 source.include_exts = py,png,jpg,kv,atlas
 
 # (str) Application versioning
@@ -40,11 +40,11 @@ android.ndk = 25b
 android.accept_sdk_license = True
 
 # (list) List of Android architectures to build for
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a
 
 [buildozer]
 
-# (int) Log level (0 = error only, 1 = info, 2 = debug with command output)
+# (int) Log level
 log_level = 2
 
 # (int) Display warning if buildozer is run as root
