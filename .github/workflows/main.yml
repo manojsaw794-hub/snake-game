@@ -44,14 +44,14 @@ jobs:
             libssl-dev \
             libffi-dev
 
-      - name: Install Python Dependencies
+      - name: Install Correct Python & Cython Dependencies
         run: |
-          python -m pip install --upgrade pip setuptools
-          pip install "cython<3.0.0" buildozer kivy
+          python3.10 -m pip install --upgrade pip setuptools
+          python3.10 -m pip install "cython<3.0.0" "buildozer==1.5.0" "kivy==2.2.1"
 
       - name: Build APK with Buildozer
         run: |
-          buildozer -v android debug
+          python3.10 -m buildozer -v android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
