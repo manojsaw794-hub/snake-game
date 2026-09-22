@@ -1,43 +1,51 @@
-from kivy.app import App
-from kivy.uix.widget import Widget
-from kivy.graphics import Color, Rectangle
-from kivy.clock import Clock
-from random import randint
+[app]
 
-class SnakeGame(Widget):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.snake = [(100, 100), (90, 100), (80, 100)]
-        self.direction = (10, 0)
-        self.food = (200, 200)
-        Clock.schedule_interval(self.update, 0.1)
+# (str) Title of your application
+title = Snake Game
 
-    def update(self, dt):
-        head = (self.snake[0][0] + self.direction[0], self.snake[0][1] + self.direction[1])
-        self.snake.insert(0, head)
-        
-        if abs(head[0] - self.food[0]) < 15 and abs(head[1] - self.food[1]) < 15:
-            self.food = (randint(2, 20) * 20, randint(2, 20) * 20)
-        else:
-            self.snake.pop()
+# (str) Package name
+package.name = snakegame
 
-        self.canvas.clear()
-        with self.canvas:
-            Color(0, 1, 0, 1)
-            for part in self.snake:
-                Rectangle(pos=part, size=(15, 15))
-            Color(1, 0, 0, 1)
-            Rectangle(pos=self.food, size=(15, 15))
+# (str) Package domain (needed for android/ios packaging)
+package.domain = org.test
 
-    def on_touch_down(self, touch):
-        if touch.x > self.width / 2:
-            self.direction = (0, 10) if self.direction[0] != 0 else (-10, 0)
-        else:
-            self.direction = (0, -10) if self.direction[0] != 0 else (10, 0)
+# (str) Source code where the main.py lives
+source.dir = .
 
-class SnakeApp(App):
-    def build(self):
-        return SnakeGame()
+# (list) Source files to include (leave empty to include all files)
+source.include_exts = py,png,jpg,kv,atlas
 
-if __name__ == '__main__':
-    SnakeApp().run()
+# (str) Application versioning
+version = 0.1
+
+# (list) Application requirements
+requirements = python3,kivy
+
+# (str) Supported orientations
+orientation = portrait
+
+# (bool) Indicate if the application should be fullscreen or not
+fullscreen = 1
+
+# (int) Target Android API
+android.api = 33
+
+# (int) Minimum API required
+android.minapi = 21
+
+# (str) Android NDK version to use
+android.ndk = 25b
+
+# (bool) Accept SDK license
+android.accept_sdk_license = True
+
+# (list) List of Android architectures to build for
+android.archs = arm64-v8a, armeabi-v7a
+
+[buildozer]
+
+# (int) Log level (0 = error only, 1 = info, 2 = debug with command output)
+log_level = 2
+
+# (int) Display warning if buildozer is run as root
+warn_on_root = 1
