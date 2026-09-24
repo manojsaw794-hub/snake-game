@@ -28,7 +28,7 @@ orientation = portrait
 fullscreen = 1
 
 # (int) Target Android API
-android.api = 33
+android.api = 31
 
 # (int) Minimum API required
 android.minapi = 21
